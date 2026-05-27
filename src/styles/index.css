@@ -612,13 +612,14 @@ h1, h2, h3, h4, h5, h6 {
   width: 55%;
   height: 60%;
   z-index: 1;
-  opacity: 0.18;
-  transition: opacity 0.6s var(--ease-expo), filter 0.6s var(--ease-expo);
+  opacity: 0.15;
+  transition: opacity 0.6s var(--ease-expo);
+  mask-image: radial-gradient(ellipse 90% 80% at 70% 50%, black 25%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 70% 50%, black 25%, transparent 72%);
 }
 
 .hero-chart:hover {
-  opacity: 0.65;
-  filter: drop-shadow(0 0 40px rgba(246, 97, 66, 0.22));
+  opacity: 0.55;
 }
 
 .hero-chart svg {
@@ -1211,7 +1212,7 @@ h1, h2, h3, h4, h5, h6 {
 .teaching-card {
   text-align: left;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .teaching-card .step-number {
@@ -1252,24 +1253,40 @@ h1, h2, h3, h4, h5, h6 {
   stroke-linejoin: round;
 }
 
-/* Progress line connecting cards */
-.teaching-progress {
+/* Teaching connector — static decorative line between cards */
+.teaching-connector {
   position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.04);
+  top: 72px;
+  left: calc(12.5% + 20px);
+  right: calc(12.5% + 20px);
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255,255,255,0.06) 10%,
+    rgba(255,255,255,0.06) 90%,
+    transparent
+  );
   z-index: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
 }
 
-.teaching-progress-fill {
-  height: 100%;
-  width: 0%;
-  background: var(--accent);
-  border-radius: 1px;
-  transition: width 0.1s linear;
-  box-shadow: var(--glow-sm);
+.teaching-connector-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  transition: all 0.4s var(--ease-expo);
+}
+
+.teaching-cards:hover .teaching-connector-dot {
+  background: rgba(var(--accent-rgb), 0.25);
+  border-color: rgba(var(--accent-rgb), 0.4);
+  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.2);
 }
 
 /* ============================================

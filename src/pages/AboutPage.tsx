@@ -309,7 +309,6 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
 
   const mission = useScrollReveal(0.1);
   const teaching = useStaggerReveal(4, 150, 0.1);
-  const teachingProgress = useScrollProgress();
   const expertise = useStaggerReveal(4, 120, 0.1);
   const timeline = useScrollProgress();
   const values = useStaggerReveal(4, 100, 0.1);
@@ -449,12 +448,11 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
           </p>
         </div>
 
-        <div className="teaching-cards" ref={teachingProgress.ref}>
-          <div className="teaching-progress">
-            <div
-              className="teaching-progress-fill"
-              style={{ width: `${Math.min(teachingProgress.progress * 130, 100)}%` }}
-            />
+        <div className="teaching-cards">
+          <div className="teaching-connector" aria-hidden="true">
+            {[0, 1, 2, 3].map(i => (
+              <div key={i} className="teaching-connector-dot" style={{ transitionDelay: `${0.1 + i * 0.12}s` }} />
+            ))}
           </div>
           {teachingMethods.map((method, i) => (
             <div
