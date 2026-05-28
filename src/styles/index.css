@@ -148,11 +148,6 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
-.glow-orange {
-  /* fallback glow — framer-motion handles the animated filter inline */
-  filter: drop-shadow(0 0 20px rgba(246, 97, 66, 0.3));
-}
-
 /* ============================================
    Navbar
    ============================================ */
