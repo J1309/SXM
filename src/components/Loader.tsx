@@ -35,8 +35,8 @@ const glowStyle: React.CSSProperties = {
 const logoStyle: React.CSSProperties = {
   position: 'relative',
   zIndex: 10,
-  width: 40,
-  height: 40,
+  width: 56,
+  height: 56,
   objectFit: 'contain',
 };
 
