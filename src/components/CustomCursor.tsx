@@ -1,11 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 
+function isTouchDevice() {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(hover: none)').matches || 'ontouchstart' in window;
+}
+
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const [hovering, setHovering] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
+    setIsTouch(isTouchDevice());
+  }, []);
+
+  useEffect(() => {
+    if (isTouch) return;
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
     let glowX = 0, glowY = 0;
@@ -57,7 +68,9 @@ export default function CustomCursor() {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseover', onOver);
     };
-  }, []);
+  }, [isTouch]);
+
+  if (isTouch) return null;
 
   return (
     <>

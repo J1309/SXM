@@ -421,6 +421,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
   const [heroRevealed, setHeroRevealed] = useState(false);
   const [chartMouse, setChartMouse] = useState({ x: -1, y: -1 });
   const chartRef = useRef<HTMLDivElement>(null);
+  const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches;
 
   useEffect(() => {
     const t = setTimeout(() => setHeroRevealed(true), 200);
@@ -434,6 +435,18 @@ export default function HomePage({ onNavigate }: HomePageProps) {
     setChartMouse({
       x: (e.clientX - rect.left) / rect.width,
       y: (e.clientY - rect.top) / rect.height,
+    });
+  }, []);
+
+  const handleChartTouch = useCallback((e: React.TouchEvent) => {
+    const el = chartRef.current;
+    if (!el) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    const rect = el.getBoundingClientRect();
+    setChartMouse({
+      x: (touch.clientX - rect.left) / rect.width,
+      y: (touch.clientY - rect.top) / rect.height,
     });
   }, []);
 
@@ -453,18 +466,19 @@ export default function HomePage({ onNavigate }: HomePageProps) {
   const count2 = useCountUp(50, 1200);
   const count3 = useCountUp(100, 1200);
 
-  // Dashboard tilt
+  // Dashboard tilt — disabled on touch devices
   const tilt = useTilt(5);
 
-  // Card mouse tracking for glow
+  // Card mouse tracking for glow — skip on touch (CSS handles it)
   const handleCardMouse = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (isTouchDevice) return;
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     card.style.setProperty('--mouse-x', `${x}%`);
     card.style.setProperty('--mouse-y', `${y}%`);
-  }, []);
+  }, [isTouchDevice]);
 
   const moduleData = [
     { title: 'Stock Market Basics', desc: 'Understand how markets function, key terminology, and how prices move.' },
@@ -488,6 +502,8 @@ export default function HomePage({ onNavigate }: HomePageProps) {
           ref={chartRef}
           onMouseMove={handleChartMouse}
           onMouseLeave={handleChartLeave}
+          onTouchMove={handleChartTouch}
+          onTouchEnd={handleChartLeave}
         >
           <HeroCandlestickChart mouseX={chartMouse.x} mouseY={chartMouse.y} />
         </div>
@@ -610,8 +626,8 @@ export default function HomePage({ onNavigate }: HomePageProps) {
           <div
             className="dashboard-mockup"
             ref={tilt.ref}
-            onMouseMove={tilt.handleMove}
-            onMouseLeave={tilt.handleLeave}
+            onMouseMove={isTouchDevice ? undefined : tilt.handleMove}
+            onMouseLeave={isTouchDevice ? undefined : tilt.handleLeave}
           >
             <div className="dashboard-header">
               <span>STOXCOM TRADE PLANNER</span>

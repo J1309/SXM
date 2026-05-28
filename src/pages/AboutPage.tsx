@@ -287,6 +287,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
   const [heroRevealed, setHeroRevealed] = useState(false);
   const [chartMouse, setChartMouse] = useState({ x: -1, y: -1 });
   const chartRef = useRef<HTMLDivElement>(null);
+  const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches;
 
   useEffect(() => {
     const t = setTimeout(() => setHeroRevealed(true), 200);
@@ -303,6 +304,18 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
     });
   }, []);
 
+  const handleChartTouch = useCallback((e: React.TouchEvent) => {
+    const el = chartRef.current;
+    if (!el) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    const rect = el.getBoundingClientRect();
+    setChartMouse({
+      x: (touch.clientX - rect.left) / rect.width,
+      y: (touch.clientY - rect.top) / rect.height,
+    });
+  }, []);
+
   const handleChartLeave = useCallback(() => {
     setChartMouse({ x: -1, y: -1 });
   }, []);
@@ -315,13 +328,14 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
   const ctaReveal = useScrollReveal(0.15);
 
   const handleCardMouse = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (isTouchDevice) return;
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     card.style.setProperty('--mouse-x', `${x}%`);
     card.style.setProperty('--mouse-y', `${y}%`);
-  }, []);
+  }, [isTouchDevice]);
 
   const teachingMethods = [
     { icon: <UnderstandIcon />, step: 'Step 01', title: 'Understand', desc: 'Learn the foundation of stock markets and price behavior.' },
@@ -368,6 +382,8 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
           ref={chartRef}
           onMouseMove={handleChartMouse}
           onMouseLeave={handleChartLeave}
+          onTouchMove={handleChartTouch}
+          onTouchEnd={handleChartLeave}
         >
           <AboutHeroCandlestickChart mouseX={chartMouse.x} mouseY={chartMouse.y} />
         </div>

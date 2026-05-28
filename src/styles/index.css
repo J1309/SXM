@@ -1514,6 +1514,96 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
+   Hamburger Menu
+   ============================================ */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  padding: 8px;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: all 0.3s var(--ease-expo);
+}
+
+.hamburger-btn.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger-btn.open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger-btn.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 24px 20px 32px;
+  z-index: 999;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-expo), transform 0.3s var(--ease-expo);
+  pointer-events: none;
+}
+
+.mobile-menu.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.mobile-menu button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  font-family: var(--font-primary);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-align: left;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.mobile-menu button.active {
+  color: var(--accent);
+}
+
+.mobile-menu .mobile-menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.mobile-menu .mobile-menu-actions .btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* ============================================
    Responsive
    ============================================ */
 @media (max-width: 1024px) {
@@ -1537,6 +1627,11 @@ h1, h2, h3, h4, h5, h6 {
   .section { padding: 80px 32px; }
   .hero { padding: 120px 32px 60px; }
   .navbar { padding: 0 24px; }
+
+  /* Teaching connector doesn't make sense in 2-col */
+  .teaching-connector {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1552,8 +1647,11 @@ h1, h2, h3, h4, h5, h6 {
     gap: 24px;
   }
 
+  /* Navbar: hide desktop links, show hamburger */
   .navbar-links { display: none; }
-  .navbar-actions .btn-outline { display: none; }
+  .navbar-actions { display: none; }
+  .hamburger-btn { display: flex; }
+  .mobile-menu { display: flex; }
 
   .hero-headline {
     font-size: clamp(2rem, 8vw, 3rem);
@@ -1569,19 +1667,225 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
   }
 
+  /* CTA buttons stack on mobile */
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  .cta-buttons .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
   .dashboard-panels {
     grid-template-columns: 1fr;
+  }
+
+  /* Hero chart: smaller on mobile, always slightly visible */
+  .hero-chart {
+    width: 100%;
+    height: 40%;
+    opacity: 0.2;
+  }
+
+  /* Hide floating market data on mobile (overlaps content) */
+  .market-data-float {
+    display: none;
+  }
+
+  /* About hero */
+  .about-hero {
+    min-height: 70vh;
+    padding: 100px 20px 40px;
+  }
+
+  /* Footer stacks on mobile */
+  .site-footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 24px 20px;
+  }
+
+  /* Watchlist wraps */
+  .watchlist {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Timeline padding */
+  .timeline-container {
+    padding-left: 32px;
+  }
+  .timeline-marker {
+    left: -25px;
   }
 
   .section { padding: 60px 20px; }
   .hero { padding: 100px 20px 40px; }
 
+  /* Custom cursor: fully hidden on mobile */
   .custom-cursor,
   .cursor-glow {
     display: none !important;
   }
   html, body, a, button {
     cursor: auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-headline {
+    font-size: clamp(1.7rem, 7vw, 2.5rem);
+  }
+
+  .hero-subtext {
+    font-size: 0.95rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .stat-number {
+    font-size: clamp(2rem, 10vw, 2.8rem);
+  }
+
+  .glass-card {
+    padding: 24px;
+  }
+
+  .dashboard-mockup {
+    padding: 16px;
+  }
+
+  .mission-section {
+    gap: 40px;
+  }
+}
+
+/* ============================================
+   Touch Device Overrides
+   Make hover-dependent features work without hover
+   ============================================ */
+@media (hover: none) {
+  /* Restore default cursor everywhere */
+  html, body, a, button {
+    cursor: auto !important;
+  }
+
+  .custom-cursor,
+  .cursor-glow {
+    display: none !important;
+  }
+
+  /* Glass cards: show a subtle glow permanently, no lift */
+  .glass-card::before {
+    background: radial-gradient(ellipse at 50% 50%,
+      rgba(var(--accent-rgb), 0.06), transparent 70%);
+    opacity: 0.6;
+  }
+  .glass-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .glass-card:active {
+    border-color: var(--glass-border-hover);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(var(--accent-rgb), 0.2);
+  }
+
+  /* Module cards: don't dim siblings */
+  .modules-grid:hover .module-card:not(:hover) {
+    opacity: 1;
+  }
+
+  /* Module number: always show accent at low opacity */
+  .module-card .module-number {
+    color: rgba(var(--accent-rgb), 0.3);
+  }
+
+  /* Module icon: always show accent color */
+  .module-card .module-icon svg {
+    stroke: rgba(var(--accent-rgb), 0.5);
+  }
+
+  /* Module chart line: always visible */
+  .module-chart-line {
+    opacity: 0.2;
+  }
+  .module-chart-line svg path {
+    stroke-dashoffset: 0;
+  }
+
+  /* Promise card icons: always drawn */
+  .promise-card-icon svg path,
+  .promise-card-icon svg line,
+  .promise-card-icon svg polyline,
+  .promise-card-icon svg rect,
+  .promise-card-icon svg circle {
+    stroke-dashoffset: 0;
+  }
+
+  /* Hero chart: always slightly visible, no hover boost */
+  .hero-chart {
+    opacity: 0.3;
+  }
+  .hero-chart:hover {
+    opacity: 0.3;
+    filter: none;
+  }
+
+  /* Expertise cards: no float animation (battery) */
+  .expertise-card {
+    animation: none;
+  }
+
+  /* Expertise icon: always accent */
+  .expertise-card .expertise-icon svg {
+    stroke: rgba(var(--accent-rgb), 0.5);
+  }
+
+  /* Mission pillar: no hover shift */
+  .mission-pillar:hover {
+    transform: none;
+  }
+
+  /* Value card accent: slightly wider by default */
+  .value-card .value-accent {
+    width: 40px;
+  }
+  .value-card:hover .value-accent {
+    width: 40px;
+    height: 3px;
+  }
+
+  /* Dashboard: no tilt, no hover glow */
+  .dashboard-mockup:hover {
+    box-shadow: none;
+  }
+
+  /* Buttons: no translateY on hover, just color */
+  .btn-primary:hover {
+    transform: none;
+    box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.3);
+  }
+  .btn-outline:hover {
+    transform: none;
+  }
+
+  /* Teaching connector dots: always subtly lit */
+  .teaching-connector-dot {
+    background: rgba(var(--accent-rgb), 0.15);
+    border-color: rgba(var(--accent-rgb), 0.25);
   }
 }
 
