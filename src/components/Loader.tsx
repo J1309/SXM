@@ -1,4 +1,5 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface LoaderProps {
   onComplete: () => void;
@@ -8,62 +9,55 @@ export default function Loader({ onComplete }: LoaderProps) {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setFadeOut(true), 2200);
-    const removeTimer = setTimeout(() => onComplete(), 2800);
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(removeTimer);
-    };
+    const t1 = setTimeout(() => setFadeOut(true), 2200);
+    const t2 = setTimeout(() => onComplete(), 2800);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [onComplete]);
 
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 20 }, (_, i) => ({
-        id: i,
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        delay: `${Math.random() * 2}s`,
-        duration: `${2 + Math.random() * 2}s`,
-        color: i % 3 === 0 ? '#F66142' : 'rgba(255,255,255,0.4)',
-        size: `${1 + Math.random() * 2}px`,
-      })),
-    []
-  );
-
   return (
-    <div className={`loader-screen ${fadeOut ? 'fade-out' : ''}`}>
-      {/* Background particles */}
-      {particles.map(p => (
-        <div
-          key={p.id}
-          className="loader-particle"
-          style={{
-            left: p.left,
-            top: p.top,
-            animationDelay: p.delay,
-            animationDuration: p.duration,
-            background: p.color,
-            width: p.size,
-            height: p.size,
-          }}
-        />
-      ))}
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+      animate={{ opacity: fadeOut ? 0 : 1 }}
+      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+    >
+      <div className="absolute inset-0 grid-bg opacity-50" />
 
-      {/* Candlestick line behind logo */}
-      <div className="loader-candlestick-line">
-        <svg viewBox="0 0 300 60">
-          <path d="M0,40 L30,35 L50,42 L70,28 L90,32 L110,20 L130,25 L150,15 L170,22 L190,12 L210,18 L230,8 L250,14 L270,6 L300,10" />
-        </svg>
-      </div>
+      <motion.div
+        className="absolute inset-0"
+        animate={{
+          background: [
+            'radial-gradient(circle at center, rgba(246, 97, 66, 0.15) 0%, transparent 50%)',
+            'radial-gradient(circle at center, rgba(246, 97, 66, 0.25) 0%, transparent 60%)',
+            'radial-gradient(circle at center, rgba(246, 97, 66, 0.15) 0%, transparent 50%)',
+          ],
+        }}
+        transition={{ duration: 2, repeat: Infinity }}
+      />
 
-      {/* Logo container */}
-      <div className="loader-logo-container">
-        <img
-          src="/STX-logo.png"
-          alt="Stoxcom"
-          className="loader-logo"
-        />
+      <div className="relative z-10 flex flex-col items-center">
+        <motion.div className="relative">
+          <motion.img
+            src="/STX-logo.png"
+            alt="Stoxcom"
+            className="w-32 h-32 md:w-48 md:h-48 object-contain glow-orange"
+            initial={{
+              filter: 'drop-shadow(0 0 20px rgba(246, 97, 66, 0.4)) drop-shadow(0 0 40px rgba(246, 97, 66, 0.2))',
+            }}
+            animate={{
+              y: [0, -8, 0],
+              filter: [
+                'drop-shadow(0 0 20px rgba(246, 97, 66, 0.4)) drop-shadow(0 0 40px rgba(246, 97, 66, 0.2))',
+                'drop-shadow(0 0 40px rgba(246, 97, 66, 0.8)) drop-shadow(0 0 60px rgba(246, 97, 66, 0.4))',
+                'drop-shadow(0 0 20px rgba(246, 97, 66, 0.4)) drop-shadow(0 0 40px rgba(246, 97, 66, 0.2))',
+              ],
+            }}
+            transition={{
+              y: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+              filter: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' },
+            }}
+          />
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
