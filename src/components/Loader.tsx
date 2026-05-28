@@ -58,8 +58,6 @@ export default function Loader({ onComplete }: LoaderProps) {
 
       {/* Logo container */}
       <div className="loader-logo-container">
-        <div className="loader-glow" />
-        <div className="loader-ring" />
         <img
           src="/STX-logo.png"
           alt="Stoxcom"
