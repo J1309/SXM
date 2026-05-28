@@ -1599,6 +1599,39 @@ h1, h2, h3, h4, h5, h6 {
   .section { padding: 60px 20px; }
   .hero { padding: 100px 20px 40px; }
 
+  /* Mobile: always show card icons and glow without requiring touch */
+  .glass-card::before {
+    opacity: 0.45;
+  }
+  .glass-card {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+  .promise-card-icon svg path,
+  .promise-card-icon svg line,
+  .promise-card-icon svg polyline,
+  .promise-card-icon svg rect,
+  .promise-card-icon svg circle {
+    stroke-dashoffset: 0;
+  }
+  .module-card .module-icon svg {
+    stroke: var(--accent);
+  }
+  .module-card .module-number {
+    color: rgba(var(--accent-rgb), 0.5);
+  }
+  .module-chart-line {
+    opacity: 0.25;
+  }
+  .module-chart-line svg path {
+    stroke-dashoffset: 0;
+  }
+  .expertise-card .expertise-icon svg {
+    stroke: rgba(var(--accent-rgb), 0.6);
+  }
+  .value-card .value-accent {
+    width: 40px;
+  }
+
   /* Custom cursor: fully hidden on mobile */
   .custom-cursor,
   .cursor-glow {
@@ -1663,13 +1696,7 @@ h1, h2, h3, h4, h5, h6 {
     display: none !important;
   }
 
-  /* Glass cards: always clearly visible with subtle glow */
-  .glass-card::before {
-    opacity: 0.35;
-  }
-  .glass-card {
-    border-color: rgba(255, 255, 255, 0.12);
-  }
+  /* Glass cards: glow on tap, no hover lift */
   .glass-card:hover {
     transform: none;
     box-shadow: none;
@@ -1687,33 +1714,6 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1;
   }
 
-  /* Module number: always show accent at low opacity */
-  .module-card .module-number {
-    color: rgba(var(--accent-rgb), 0.3);
-  }
-
-  /* Module icon: always show accent color */
-  .module-card .module-icon svg {
-    stroke: rgba(var(--accent-rgb), 0.5);
-  }
-
-  /* Module chart line: always visible */
-  .module-chart-line {
-    opacity: 0.2;
-  }
-  .module-chart-line svg path {
-    stroke-dashoffset: 0;
-  }
-
-  /* Promise card icons: always drawn */
-  .promise-card-icon svg path,
-  .promise-card-icon svg line,
-  .promise-card-icon svg polyline,
-  .promise-card-icon svg rect,
-  .promise-card-icon svg circle {
-    stroke-dashoffset: 0;
-  }
-
   /* Hero chart: clearly readable at rest, touch glow handled by onTouchMove */
   .hero-chart {
     opacity: 0.75;
@@ -1724,23 +1724,9 @@ h1, h2, h3, h4, h5, h6 {
     animation: none;
   }
 
-  /* Expertise icon: always accent */
-  .expertise-card .expertise-icon svg {
-    stroke: rgba(var(--accent-rgb), 0.5);
-  }
-
   /* Mission pillar: no hover shift */
   .mission-pillar:hover {
     transform: none;
-  }
-
-  /* Value card accent: slightly wider by default */
-  .value-card .value-accent {
-    width: 40px;
-  }
-  .value-card:hover .value-accent {
-    width: 40px;
-    height: 3px;
   }
 
   /* Dashboard: no tilt, no hover glow */
