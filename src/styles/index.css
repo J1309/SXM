@@ -1663,9 +1663,9 @@ h1, h2, h3, h4, h5, h6 {
     display: none !important;
   }
 
-  /* Glass cards: no glow at rest, glow burst on tap */
+  /* Glass cards: always have a subtle glow visible */
   .glass-card::before {
-    opacity: 0;
+    opacity: 0.25;
   }
   .glass-card:hover {
     transform: none;
@@ -1711,9 +1711,9 @@ h1, h2, h3, h4, h5, h6 {
     stroke-dashoffset: 0;
   }
 
-  /* Hero chart: readable at rest, touch glow handled by onTouchMove */
+  /* Hero chart: clearly readable at rest, touch glow handled by onTouchMove */
   .hero-chart {
-    opacity: 0.5;
+    opacity: 0.75;
   }
 
   /* Expertise cards: no float animation (battery) */
