@@ -1788,15 +1788,16 @@ h1, h2, h3, h4, h5, h6 {
     display: none !important;
   }
 
-  /* Glass cards: show a subtle glow permanently, no lift */
+  /* Glass cards: no glow at rest, glow burst on tap */
   .glass-card::before {
-    background: radial-gradient(ellipse at 50% 50%,
-      rgba(var(--accent-rgb), 0.06), transparent 70%);
-    opacity: 0.6;
+    opacity: 0;
   }
   .glass-card:hover {
     transform: none;
     box-shadow: none;
+  }
+  .glass-card:active::before {
+    opacity: 0.6;
   }
   .glass-card:active {
     border-color: var(--glass-border-hover);
@@ -1835,13 +1836,9 @@ h1, h2, h3, h4, h5, h6 {
     stroke-dashoffset: 0;
   }
 
-  /* Hero chart: always slightly visible, no hover boost */
+  /* Hero chart: readable at rest, touch glow handled by onTouchMove */
   .hero-chart {
-    opacity: 0.3;
-  }
-  .hero-chart:hover {
-    opacity: 0.3;
-    filter: none;
+    opacity: 0.5;
   }
 
   /* Expertise cards: no float animation (battery) */
